@@ -1,4 +1,5 @@
 
+import os
 from schemas import *
 from database import *
 from fastapi import FastAPI,HTTPException
@@ -9,7 +10,9 @@ from sqlalchemy import or_
 from auth import autenticat_curr_user, SECRET_KEY, ALGORITHM, pwd_context
 from game import router as game_router
 from datetime import datetime, timedelta,timezone
+from dotenv import load_dotenv
 
+load_dotenv()
 
 app = FastAPI()
 app.include_router(game_router)
@@ -17,7 +20,7 @@ app.include_router(game_router)
 
 app.add_middleware(
     SessionMiddleware,
-    secret_key="your_random_secret_key_here"
+    secret_key=os.environ["SESSION_SECRET_KEY"]
 )
 app.add_middleware(
     CORSMiddleware,

@@ -1,13 +1,16 @@
+import os
 from fastapi import Depends,HTTPException
 from jose import jwt,JWTError
 from fastapi.security import HTTPAuthorizationCredentials,HTTPBearer
 from passlib.context import CryptContext
 from database import *
-
+from dotenv import load_dotenv
 
 from typing import Optional
 
-SECRET_KEY = "my_secret_key"
+load_dotenv()
+
+SECRET_KEY = os.environ["JWT_SECRET_KEY"]
 
 ALGORITHM = "HS256"
 

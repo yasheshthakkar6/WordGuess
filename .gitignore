@@ -4,6 +4,12 @@ __pycache__/
 *.pyc
 *.pyo
 
+# Environment variables / secrets -- never commit real values.
+# .env.example is intentionally allowed through as a template.
+.env
+*.env
+!*.env.example
+
 # SQLite database -- contains real user data (emails, password hashes) from testing,
 # never commit this
 backend/*.db

@@ -22,16 +22,23 @@ app.add_middleware(
     SessionMiddleware,
     secret_key=os.environ["SESSION_SECRET_KEY"]
 )
+# Local dev origins are always allowed; add the deployed frontend's URL via
+# FRONTEND_URL (e.g. https://your-app.vercel.app) so CORS also works in production.
+# Supports a comma-separated list if you ever need more than one (preview + prod).
+_allowed_origins = [
+    "http://127.0.0.1:3000",
+    "http://localhost:3000",
+]
+_frontend_url = os.environ.get("FRONTEND_URL")
+if _frontend_url:
+    _allowed_origins += [origin.strip() for origin in _frontend_url.split(",") if origin.strip()]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://127.0.0.1:3000",
-        "http://localhost:3000"
-    ],
+    allow_origins=_allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-    
 )
 @app.post('/register')
 

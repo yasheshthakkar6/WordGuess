@@ -1,0 +1,21 @@
+# Python / backend
+backend/env/
+__pycache__/
+*.pyc
+*.pyo
+
+# SQLite database -- contains real user data (emails, password hashes) from testing,
+# never commit this
+backend/*.db
+backend/*.sqlite3
+
+# Node / frontend (frontend/wordguess has its own .gitignore too, this just
+# covers the case of node_modules or a build showing up anywhere else)
+node_modules/
+.next/
+.env.local
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp

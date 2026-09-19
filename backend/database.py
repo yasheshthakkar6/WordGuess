@@ -14,9 +14,16 @@ from datetime import datetime, date
 from sqlalchemy.orm import declarative_base, sessionmaker, relationship
 from enum import Enum
 
-DATABASE_URL = "sqlite:///wordguess.db"
+import os
 
-engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///wordguess.db")
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql+psycopg2://", 1)
+
+IS_SQLITE = DATABASE_URL.startswith("sqlite")
+
+engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False} if IS_SQLITE else {},
+pool_pre_ping=True)
 SessionLocal = sessionmaker(bind=engine)
 
 Base = declarative_base()
@@ -160,6 +167,8 @@ def _run_lightweight_migrations():
     has to be added by hand here or existing rows would 500 on read/write.
     Safe to run every startup: each ALTER is guarded by a table_info check.
     """
+    if not IS_SQLITE:
+        return 
     inspector_columns = {}
     with engine.connect() as conn:
         for table in ("words_table", "game_session_table", "users_stats_table"):

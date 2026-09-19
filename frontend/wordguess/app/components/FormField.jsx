@@ -15,7 +15,7 @@ export default function FormField({ label, ...props }) {
         {...field}
         {...props}
         id={props.id || props.name}
-        className={`rounded-lg border px-3 py-2 text-sm outline-none transition-colors focus:ring-2 focus:ring-emerald-400 ${
+        className={`rounded-lg border px-3 py-2 text-sm text-black outline-none transition-colors focus:ring-2 focus:ring-emerald-400 ${
           showError ? "border-red-500" : "border-zinc-300"
         }`}
       />
